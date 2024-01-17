@@ -18,6 +18,10 @@ const state = {
     button: document.getElementById("next-duel"),
   },
 };
+const playersSides = {
+  player1: "player-field-card",
+  computer: "computer-field-card",
+};
 
 const pathImages = "./src/assets/icons/";
 
@@ -48,6 +52,18 @@ const cardData = [
   },
 ];
 
-function init() {}
+async function drawCards(cardNumbers, fieldSide) {
+  for (let i = 0; i < cardNumbers; i++) {
+    const randomIdCard = await getRandomCardId();
+    const cardImage = await crateCardIMage(randomIdCard, fieldSide);
+
+    document.getElementById(fieldSide).appendChild(cardImage);
+  }
+}
+
+function init() {
+  drawCards(5, playersSides.player1);
+  drawCards(5, playersSides.computer);
+}
 
 init();
