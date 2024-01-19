@@ -79,6 +79,24 @@ async function createCardImage(IdCard, fieldSide) {
   return cardImage;
 }
 
+async function showHiddenCardFieldsImages(value) {
+  if (value === true) {
+    state.fieldCards.player.style.display = "block";
+    state.fieldCards.computer.style.display = "block";
+  }
+
+  if (value === false) {
+    state.fieldCards.player.style.display = "none";
+    state.fieldCards.computer.style.display = "none";
+  }
+}
+
+async function hiddenCardDetails() {
+  state.cardsSprites.avatar.src = "";
+  state.cardsSprites.name.innerText = "";
+  state.cardsSprites.type.innerText = "";
+}
+
 async function drawButton(text) {
   state.actions.button.innerText = text.toUpperCase();
   state.actions.button.style.display = "block";
@@ -121,16 +139,21 @@ async function setCardsField(cardId) {
 
   let computerCardId = await getRandomCardId();
 
-  state.fieldCards.player.style.display = "block";
-  state.fieldCards.computer.style.display = "block";
+  await showHiddenCardFieldsImages(true);
 
-  state.fieldCards.player.src = cardData[cardId].img;
-  state.fieldCards.computer.src = cardData[computerCardId].img;
+  await hiddenCardDetails();
+
+  await drawCardsInFields(cardId, computerCardId);
 
   let duelResults = await checkDuelResults(cardId, computerCardId);
 
   await updateScore();
   await drawButton(duelResults);
+}
+
+async function drawCardsInFields(cardId, computerCardId) {
+  state.fieldCards.player.src = cardData[cardId].img;
+  state.fieldCards.computer.src = cardData[computerCardId].img;
 }
 
 async function drawSelectCard(index) {
@@ -150,6 +173,7 @@ async function drawCards(cardNumbers, fieldSide) {
 
 async function resetDuel() {
   state.cardsSprites.avatar.src = "";
+
   state.actions.button.style.display = "none";
 
   state.fieldCards.player.style.display = "none";
@@ -167,8 +191,7 @@ async function playAudio(status) {
 }
 
 function init() {
-  state.fieldCards.player.style.display = "none";
-  state.fieldCards.computer.style.display = "none";
+  showHiddenCardFieldsImages(false);
 
   drawCards(5, state.playersSides.player1);
   drawCards(5, state.playersSides.computer);
