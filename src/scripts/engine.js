@@ -195,6 +195,9 @@ function init() {
 
   drawCards(5, state.playersSides.player1);
   drawCards(5, state.playersSides.computer);
+
+  const bgm = document.getElementById("bgm");
+  bgm.play();
 }
 
 init();
