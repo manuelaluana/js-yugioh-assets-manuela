@@ -97,7 +97,7 @@ async function checkDuelResults(playerCardId, computerCardId) {
     state.score.playerScore++;
   }
 
-  if (playerCard.LoseOf.includes.computerCardId) {
+  if (playerCard.LoseOf.includes(computerCardId)) {
     duelResults = "Perdeu";
     state.score.computerScore++;
   }
@@ -144,6 +144,16 @@ async function drawCards(cardNumbers, fieldSide) {
 
     document.getElementById(fieldSide).appendChild(cardImage);
   }
+}
+
+async function resetDuel() {
+  state.cardsSprites.avatar.src = "";
+  state.actions.button.style.display = "none";
+
+  state.fieldCards.player.style.display = "none";
+  state.fieldCards.computer.style.display = "none";
+
+  init();
 }
 
 function init() {
